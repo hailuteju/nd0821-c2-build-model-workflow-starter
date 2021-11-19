@@ -1,8 +1,7 @@
+import os
 import json
-
 import mlflow
 import tempfile
-import os
 import wandb
 import hydra
 from omegaconf import DictConfig
@@ -14,9 +13,8 @@ _steps = [
     "data_split",
     "train_random_forest",
     # NOTE: We do not include this in the steps so it is not run by mistake.
-    # You first need to promote a model export to "prod" before you can run this,
-    # then you need to run this step explicitly
-#    "test_regression_model"
+    # You first need to promote a model export to "prod" before you can run
+    # this, then you need to run this step explicitly "test_regression_model"
 ]
 
 
@@ -68,13 +66,14 @@ def go(config: DictConfig):
 
         if "train_random_forest" in active_steps:
 
-            # NOTE: we need to serialize the random forest configuration into JSON
+            # NOTE: we need to serialize the random forest configuration into
+            # JSON
             rf_config = os.path.abspath("rf_config.json")
             with open(rf_config, "w+") as fp:
                 json.dump(dict(config["modeling"]["random_forest"].items()), fp)  # DO NOT TOUCH
 
-            # NOTE: use the rf_config we just created as the rf_config parameter for the train_random_forest
-            # step
+            # NOTE: use the rf_config we just created as the rf_config
+            # parameter for the train_random_forest step
 
             ##################
             # Implement here #
